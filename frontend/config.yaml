@@ -1,0 +1,4 @@
+lakehouse-sharing:
+  host: localhost
+  port: 8001
+  prefix: delta-sharing

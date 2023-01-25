@@ -1,0 +1,6 @@
+{
+  "shareCredentialsVersion": 1,
+  "endpoint": "http://localhost:8001/delta-sharing",
+  "bearerToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZG1pbiIsImV4cCI6MTY3NTI1NjQwNH0.iqjAXFf3e8x5WeUOBUfffolfa7aXjY06aFZb0lhIVgs",
+  "expirationTime": "2023-02-01T13:00:04Z"
+}

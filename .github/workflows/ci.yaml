@@ -1,0 +1,30 @@
+name: Lakehouse-Sharing Testing
+
+on:
+  push:
+
+jobs:
+  Unit-and-Integration-testing:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.9"]
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install dependencies
+        run: |
+          python --version
+          cd backend/
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+          if [ -f dev_requirements.txt ]; then pip install -r dev_requirements.txt; fi
+          python -m pip install --upgrade pip
+          pip install flake8 pytest pytest-cov deltalake pyiceberg
+      - name: Test Backend APIs
+        run: |
+          cd backend/
+          python -m pytest --cov-report=term --cov=app tests -v

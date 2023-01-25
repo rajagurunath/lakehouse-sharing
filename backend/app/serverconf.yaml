@@ -1,0 +1,17 @@
+# Set the host name that the server will use
+host: "localhost"
+# Set the port that the server will listen on. Note: using ports below 1024
+# may require a privileged user in some operating systems.
+port: 8081
+# Set the url prefix for the REST APIs
+endpoint: "/delta-sharing"
+
+db:
+  POSTGRES_USER: ${POSTGRES_USERNAME}
+  POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:password}
+  POSTGRES_HOST: ${POSTGRES_HOST:localhost}
+  POSTGRES_PORT: ${POSTGRES_PORT:5432}
+  POSTGRES_DB: ${POSTGRES_DB:postgres}
+# db_url: "postgresql+psycopg2://${POSTGRES_USER:root}:${POSTGRES_PASSWORD:password}@${POSTGRES_HOST:localhost}:${POSTGRES_PORT:5432}/postgres"
+
+# db_url: "sqlite:////Users/cb-it-01-1834/chargebee/research/opensource/lakehouse-sharing/database.sqlite"
