@@ -22,6 +22,8 @@ class Authenticator(object):
     def login_screen(self):
         print("logged_in", st.session_state["logged_in"])
         if not st.session_state["logged_in"]:
+            st.header("Lakehouse-Sharing")
+            st.text("( A table format agnostic sharing app )")
             login_form = st.form("Lakehouse-Sharing")
             username = login_form.text_input("username")
             password = login_form.text_input("password", type="password")

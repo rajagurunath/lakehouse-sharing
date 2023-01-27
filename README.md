@@ -109,69 +109,81 @@ Once docker-compose was up and running successfully, we can expect following url
 - For more details about the backend and frondend refer respective directories
 
 ```
+.
 ├── Makefile
 ├── README.md
 ├── backend
-│   └── app
+│   ├── Dockerfile
+│   ├── app
+│   │   ├── README.md
+│   │   ├── __init__.py
+│   │   ├── __pycache__
+│   │   ├── conf.py
+│   │   ├── core
+│   │   │   ├── __init__.py
+│   │   │   ├── __pycache__
+│   │   │   ├── base.py
+│   │   │   ├── cloud
+│   │   │   │   ├── __init__.py
+│   │   │   │   ├── __pycache__
+│   │   │   │   ├── aws.py
+│   │   │   │   ├── azure.py
+│   │   │   │   ├── base.py
+│   │   │   │   └── gcs.py
+│   │   │   ├── delta
+│   │   │   │   ├── __init__.py
+│   │   │   │   ├── __pycache__
+│   │   │   │   ├── models.py
+│   │   │   │   ├── share.py
+│   │   │   │   └── utils.py
+│   │   │   └── iceberg
+│   │   │       ├── __init__.py
+│   │   │       ├── __pycache__
+│   │   │       ├── models.py
+│   │   │       └── share.py
+│   │   ├── db
+│   │   │   ├── __init__.py
+│   │   │   ├── __pycache__
+│   │   │   ├── auth_queries.py
+│   │   │   ├── queries.py
+│   │   │   └── tables.py
+│   │   ├── main.py
+│   │   ├── models
+│   │   │   ├── __init__.py
+│   │   │   ├── __pycache__
+│   │   │   ├── admin.py
+│   │   │   ├── auth.py
+│   │   │   ├── common.py
+│   │   │   └── response.py
+│   │   ├── routers
+│   │   │   ├── __init__.py
+│   │   │   ├── __pycache__
+│   │   │   ├── admin.py
+│   │   │   ├── auth.py
+│   │   │   └── share.py
+│   │   ├── securities
+│   │   │   ├── __init__.py
+│   │   │   ├── __pycache__
+│   │   │   ├── jwt_utils.py
+│   │   │   └── user_auth.py
+│   │   ├── serverconf.yaml
+│   │   └── utilities
+│   │       ├── __init__.py
+│   │       ├── __pycache__
+│   │       ├── defaults.py
+│   │       ├── exceptions.py
+│   │       ├── pagination.py
+│   │       ├── responses.py
+│   │       └── validators.py
+│   ├── requirements.txt
+│   └── tests
 │       ├── __init__.py
 │       ├── __pycache__
-│       ├── conf.py
-│       ├── core
-│       │   ├── __init__.py
-│       │   ├── __pycache__
-│       │   ├── base.py
-│       │   ├── cloud
-│       │   │   ├── __init__.py
-│       │   │   ├── __pycache__
-│       │   │   ├── aws.py
-│       │   │   ├── azure.py
-│       │   │   ├── base.py
-│       │   │   └── gcs.py
-│       │   ├── delta
-│       │   │   ├── __init__.py
-│       │   │   ├── __pycache__
-│       │   │   ├── models.py
-│       │   │   ├── share.py
-│       │   │   └── utils.py
-│       │   └── iceberg
-│       │       ├── __init__.py
-│       │       ├── __pycache__
-│       │       ├── models.py
-│       │       └── share.py
-│       ├── db
-│       │   ├── __init__.py
-│       │   ├── __pycache__
-│       │   ├── auth_queries.py
-│       │   ├── queries.py
-│       │   ├── tables.py
-│       │   └── utils.py
-│       ├── main.py
-│       ├── models
-│       │   ├── __init__.py
-│       │   ├── __pycache__
-│       │   ├── admin.py
-│       │   ├── auth.py
-│       │   ├── common.py
-│       │   └── response.py
-│       ├── routers
-│       │   ├── __init__.py
-│       │   ├── __pycache__
-│       │   ├── admin.py
-│       │   ├── auth.py
-│       │   └── share.py
-│       ├── securities
-│       │   ├── __init__.py
-│       │   ├── __pycache__
-│       │   ├── jwt_utils.py
-│       │   └── user_auth.py
-│       └── utilities
-│           ├── __init__.py
-│           ├── __pycache__
-│           ├── exceptions.py
-│           ├── pagination.py
-│           ├── responses.py
-│           └── validators.py
+│       ├── mock_results.py
+│       └── test_share_apis.py
+├── docker-compose.yaml
 ├── frontend
+│   ├── Dockerfile
 │   ├── README.md
 │   ├── app
 │   │   ├── __init__.py
@@ -199,12 +211,15 @@ Once docker-compose was up and running successfully, we can expect following url
 │   │   │   ├── table_format.py
 │   │   │   └── user.py
 │   │   └── main.py
-│   └── config.yaml
-├── requirements.txt
-├── serverconf.yaml
-├── sqls
-│   └── prepopulate_data.py
-└── test
+│   ├── config.yaml
+│   └── requirements.txt
+├── images
+│   └── lakehouse-sharing-arch.png
+├── notebooks
+│   ├── client-example.ipynb
+│   └── profile.json
+└── sqls
+    └── prepopulate_data.py
 ```
 
 ### Roadmap:

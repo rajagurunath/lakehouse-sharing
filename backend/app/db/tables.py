@@ -48,8 +48,8 @@ class Permission(SQLModel, table=True):
     # __table_args__ = {"extend_existing": True}
     id: str = Field(primary_key=True)
     user_id: str = Field(
-        default=None, nullable=False, unique=True, foreign_key="user.id"
+        default=None, nullable=False, foreign_key="user.id"
     )
     share_id: str = Field(default=None, foreign_key="share.id")
     schema_id: str = Field(default=None, foreign_key="schema.id")
-    table_id: str = Field(default=None, unique=True, foreign_key="table.id")
+    table_id: str = Field(default=None, foreign_key="table.id")

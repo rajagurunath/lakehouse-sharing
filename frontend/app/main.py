@@ -52,13 +52,13 @@ def user_link_layout():
 def main_layout():
     tab = st.sidebar.radio(
         "Pages",
-        ["Add New User", "Create a Share", "Share Permissions", "Explore Table format"],
+        ["Add User", "Create a Share", "Define Permissions", "Explore Table format"],
     )
-    if tab == "Add New User":
+    if tab == "Add User":
         create_user_layout()
     elif tab == "Create a Share":
         create_components_layout()
-    elif tab == "Share Permissions":
+    elif tab == "Define Permissions":
         user_link_layout()
     elif tab == "Explore Table format":
         table_format_exploration()
