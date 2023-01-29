@@ -4,11 +4,12 @@ from app.core.api.rest import RestClient
 client = RestClient(token=st.session_state["token"])
 
 
-def create_schema_in_db(schemaDetails):
-    response = client.post("/admin/schema", data=None, json=schemaDetails)
+def create_schema_in_db(completeDetails):
+    client.set_token(st.session_state["token"])
+    response = client.post("/admin/complete", data=None, json=completeDetails)
     print(response.content)
     if response.status_code == 200:
-        st.markdown(f"## schema {schemaDetails['name']} created in the lakehouse")
+        st.markdown(f"## Share {completeDetails['share']['name']} created in the lakehouse")
         st.balloons()
 
 
@@ -41,18 +42,23 @@ def list_tables(share):
     return _list_tables
 
 
-def create_schema_form_layout():
-    create_schema_form = st.container()
-    schemaname = create_schema_form.text_input("name")
-    col1, col2 = create_schema_form.columns(2)
-    share = col1.selectbox("shares", list_shares())
-    print(share)
-    table = col2.selectbox("table", list_tables(share))
-    submit = create_schema_form.button("create")
-    schemaDetails = {}
-    schemaDetails["name"] = schemaname
-    schemaDetails["share_id"] = share.split(" ")[1].rstrip("(").lstrip(")")
-    schemaDetails["table_id"] = table.split(" ")[1].rstrip("(").lstrip(")")
+def create_complete_share_layout():
+    create_complete_share = st.container()
+    create_complete_share.header("Create a Share")
+    sharename = create_complete_share.text_input("sharename")
+    create_complete_share.header("Create a Table")
+    tablename = create_complete_share.text_input("tablename")
+    table_location = create_complete_share.text_input("tablelocation")
+    create_complete_share.header("Create a Schema")
+    schemaname = create_complete_share.text_input("schemaname")
+    submit = create_complete_share.button("create")
+    completeDetails = {}
+    completeDetails['share'] = {"name":sharename}
+    completeDetails['schema_'] = {"name":schemaname}
+    completeDetails['table'] ={
+        "table_name":tablename,
+        "table_location":table_location
+    }
     if submit:
-        create_schema_in_db(schemaDetails)
-    return create_schema_form
+        create_schema_in_db(completeDetails)
+    return create_complete_share

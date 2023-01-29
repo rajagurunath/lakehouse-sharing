@@ -10,7 +10,10 @@ class Share(SQLModel, table=True):
     # __table_args__ = {"extend_existing": True}
 
     id: str = Field(primary_key=True)
-    name: str = Field(unique=True)
+    name: str = Field(unique=True) 
+    created_by:str = Field(
+        default=None, nullable=False, foreign_key="user.id"
+    )
 
 
 class Table(SQLModel, table=True):
@@ -18,15 +21,21 @@ class Table(SQLModel, table=True):
     id: str = Field(primary_key=True)
     table_name: str = Field(unique=True)
     table_location: str
+    created_by:str = Field(
+        default=None, nullable=False, foreign_key="user.id"
+    )
 
 
 class Schema(SQLModel, table=True):
     # __table_args__ = {"extend_existing": True}
 
     id: str = Field(primary_key=True)
-    name: str
+    name: str = Field(unique=True)
     table_id: str = Field(default=None, foreign_key="table.id")
     share_id: str = Field(default=None, foreign_key="share.id")
+    created_by:str = Field(
+        default=None, nullable=False, foreign_key="user.id"
+    )
 
 
 class User(SQLModel, table=True):
@@ -75,88 +84,15 @@ def create_db_connection():
         return engine
 
 
-engine = create_db_connection()
-session = Session(engine)
-SQLModel.metadata.create_all(engine)
-session.commit()
-
-delta_share1 = Share(name="delta_share1", id=str(uuid.uuid4()))
-iceberg_share = Share(name="iceberg_share", id=str(uuid.uuid4()))
-delta_share2 = Share(name="delta_share2", id=str(uuid.uuid4()))
-delta_share3 = Share(name="delta_share3", id=str(uuid.uuid4()))
-
-
-delta_table1 = Table(
-    table_name="test_hm",
-    id=str(uuid.uuid4()),
-    table_location="s3://tf-benchmarking/delta_2/dwh/test_hm",
-)
-delta_table2 = Table(
-    table_name="test_student",
-    id=str(uuid.uuid4()),
-    table_location="s3://tf-benchmarking/delta_2/dwh/test_student",
-)
-
-delta_table3 = Table(
-    table_name="test_teacher",
-    id=str(uuid.uuid4()),
-    table_location="s3://tf-benchmarking/delta_2/dwh/test_teacher",
-)
-
-iceberg_table4 = Table(
-    table_name="iceberg_benchmark_nyc_taxi_trips_v2",
-    id=str(uuid.uuid4()),
-    table_location="s3://dummy-bucket/iceberg_benchmark_nyc_taxi_trips_v2",
-)
-
-schema1tb1 = Schema(
-    name="delta_schema",
-    share_id=delta_share1.id,
-    id=str(uuid.uuid4()),
-    table_id=delta_table1.id,
-)
-
-schema1tb2 = Schema(
-    name="delta_schema1",
-    share_id=delta_share1.id,
-    id=str(uuid.uuid4()),
-    table_id=delta_table2.id,
-)
-
-
-schema2tb1 = Schema(
-    name="schema2",
-    share_id=delta_share2.id,
-    id=str(uuid.uuid4()),
-    table_id=delta_table1.id,
-)
-
-schema2tb2 = Schema(
-    name="schema2",
-    share_id=delta_share2.id,
-    id=str(uuid.uuid4()),
-    table_id=delta_table2.id,
-)
-
-schema3tb3 = Schema(
-    name="delta_schema2",
-    share_id=delta_share3.id,
-    id=str(uuid.uuid4()),
-    table_id=delta_table3.id,
-)
-
-schema4tb3 = Schema(
-    name="tripsdb",
-    share_id=iceberg_share.id,
-    id=str(uuid.uuid4()),
-    table_id=iceberg_table4.id,
-)
-
-
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 get_hashed_passw = lambda password: pwd_context.hash(password)
 get_user_id = lambda: uuid.uuid4().hex
 password = get_hashed_passw("admin@123")
+
+engine = create_db_connection()
+session = Session(engine)
+SQLModel.metadata.create_all(engine)
+session.commit()
 
 user5 = User(
     id=get_user_id(),
@@ -166,6 +102,95 @@ user5 = User(
     encrypted_password=password,
     namespace="data-team",
 )
+
+session.add(user5)
+session.commit()
+
+delta_share1 = Share(name="delta_share1", id=str(uuid.uuid4()),created_by=user5.id)
+iceberg_share = Share(name="iceberg_share", id=str(uuid.uuid4()),created_by=user5.id)
+delta_share2 = Share(name="delta_share2", id=str(uuid.uuid4()),created_by=user5.id)
+delta_share3 = Share(name="delta_share3", id=str(uuid.uuid4()),created_by=user5.id)
+
+
+delta_table1 = Table(
+    table_name="test_hm",
+    id=str(uuid.uuid4()),
+    table_location="s3://tf-benchmarking/delta_2/dwh/test_hm",
+    created_by=user5.id
+)
+delta_table2 = Table(
+    table_name="test_student",
+    id=str(uuid.uuid4()),
+    table_location="s3://tf-benchmarking/delta_2/dwh/test_student",
+    created_by=user5.id
+)
+
+delta_table3 = Table(
+    table_name="test_teacher",
+    id=str(uuid.uuid4()),
+    table_location="s3://tf-benchmarking/delta_2/dwh/test_teacher",
+    created_by=user5.id
+)
+
+iceberg_table4 = Table(
+    table_name="iceberg_benchmark_nyc_taxi_trips_v2",
+    id=str(uuid.uuid4()),
+    table_location="s3://dummy-bucket/iceberg_benchmark_nyc_taxi_trips_v2",
+    created_by=user5.id
+)
+
+schema1tb1 = Schema(
+    name="delta_schema",
+    share_id=delta_share1.id,
+    id=str(uuid.uuid4()),
+    table_id=delta_table1.id,
+    created_by=user5.id
+)
+
+schema1tb2 = Schema(
+    name="delta_schema1",
+    share_id=delta_share1.id,
+    id=str(uuid.uuid4()),
+    table_id=delta_table2.id,
+    created_by=user5.id
+)
+
+
+schema2tb1 = Schema(
+    name="schema2",
+    share_id=delta_share2.id,
+    id=str(uuid.uuid4()),
+    table_id=delta_table1.id,
+    created_by=user5.id
+)
+
+schema2tb2 = Schema(
+    name="schema2",
+    share_id=delta_share2.id,
+    id=str(uuid.uuid4()),
+    table_id=delta_table2.id,
+    created_by=user5.id
+)
+
+schema3tb3 = Schema(
+    name="delta_schema2",
+    share_id=delta_share3.id,
+    id=str(uuid.uuid4()),
+    table_id=delta_table3.id,
+    created_by=user5.id
+)
+
+schema4tb3 = Schema(
+    name="tripsdb",
+    share_id=iceberg_share.id,
+    id=str(uuid.uuid4()),
+    table_id=iceberg_table4.id,
+    created_by=user5.id
+)
+
+
+
+
 
 permission1 = Permission(
     id=str(uuid.uuid4()),
@@ -204,8 +229,7 @@ permission5 = Permission(
 )
 
 tlf = TokenLifetime(id=str(uuid.uuid4()), user_id=user5.id, expiry="604800")
-session.add(user5)
-session.commit()
+
 session.add(delta_share1)
 session.add(delta_share2)
 session.add(delta_share3)

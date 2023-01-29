@@ -63,7 +63,7 @@ class Query:
             .where(Share.id == Permission.share_id)
             .where(Permission.user_id == user_id)
             .distinct(Share.name)
-        )
+        ).union(select(Share).where(Share.created_by==user_id))
         print("list_shares sql", stmt.compile())
         results = self.execute_sql(stmt)
         return results
@@ -75,7 +75,7 @@ class Query:
             .where(Share.id == Permission.share_id)
             .where(Permission.user_id == user_id)
             .where(Share.name == share)
-        )
+        ).union(select(Share).where(Share.created_by==user_id))
         rows = self.execute_sql(stmt)
         if len(rows) > 0:
             res = {"id": rows[0].id, "name": rows[0].name}
@@ -83,17 +83,18 @@ class Query:
             res = None
         return res
 
-    def list_schemas(self, share):
+    def list_schemas(self, share,user_id):
         stmt = select(Share, Schema).join(Schema).where(Share.name == share)
         rows = self.execute_sql(stmt)
         res = [{"name": schema.name, "share": share.name} for (share, schema) in rows]
         return res
 
-    def list_tables(self, share, schema):
+    def list_tables(self, share, schema,user_id):
         stmt = (
             select(Share, Schema, Table)
             .where(Share.id == Schema.share_id, Schema.table_id == Table.id)
             .where(Share.name == share, Schema.name == schema)
+            # .union(select(Table).where(Table.created_by==user_id))
         )
         rows = self.execute_sql(stmt)
         res = [
@@ -110,23 +111,26 @@ class Query:
 
     def check_user_permission(self, user_id, share, schema=None, table=None):
         with Session(self.engine) as session:
-            statement = (
-                session.query(Permission)
-                .select_from(Permission)
-                .join(Share)
-                .join(Schema)
-                .join(Table)
-                .where(Permission.user_id == user_id)
-            )
+            # statement = (
+            #     session.query(Permission)
+            #     .select_from(Permission)
+            #     .join(Share)
+            #     .join(Schema)
+            #     .join(Table)
+            #     .where(Permission.user_id == user_id)
+            # )
             if share:
-                statement = statement.where(Share.name == share)
+                statement = select(Share).join(Permission).where(Permission.user_id == user_id).union(select(Share).where(Share.created_by==user_id))
+                # statement = statement.where(Share.name == share)
             if schema:
-                statement = statement.where(Schema.name == schema)
+                statement = select(Schema).join(Permission).join(Share).where(Permission.user_id == user_id).union(select(Schema).where(Schema.created_by==user_id))
+                # statement = statement.where(Schema.name == schema)
             if table:
-                statement = statement.where(Table.table_name == table)
-            statement = statement.with_entities(
-                Share.name, Table.table_name, Schema.name
-            )
+                statement = select(Table).join(Permission).join(Share).join(Schema).where(Permission.user_id == user_id).union(select(Table).where(Table.created_by==user_id))
+                # statement = statement.where(Table.table_name == table)
+            # statement = statement.with_entities(
+            #     Share.name, Table.table_name, Schema.name
+            # )
             # statement = select(Permission, Share.name,).join(Share).join(Schema).join(Table)
             # stmt = perm.query.join(Share)
             results = session.exec(statement).all()
@@ -212,26 +216,47 @@ class AdminQuery:
             print(results)
         return results
 
-    def create_share(self, share: Share):
-        shareTable = Share(id=get_random_uuid(), name=share.name)
+    def create_share(self, share: Share,user_id:str):
+        shareTable = Share(id=get_random_uuid(), name=share.name,created_by=user_id)
         self.add(shareTable)
 
-    def create_schema(self, schema: Schema):
+    def create_schema(self, schema: Schema,user_id:str):
         schemaTable = Schema(
             id=get_random_uuid(),
             name=schema.name,
             table_id=schema.table_id,
             share_id=schema.share_id,
+            created_by=user_id
         )
         self.add(schemaTable)
 
-    def create_table(self, table: Table):
+    def create_table(self, table: Table,user_id:str):
         tableTable = Table(
             id=get_random_uuid(),
             table_name=table.table_name,
             table_location=table.table_location,
+            created_by=user_id
         )
         self.add(tableTable)
+    def create_complete_share(self,all_details,user_id:str):
+        shareTable = Share(id=get_random_uuid(), name=all_details.share.name,created_by=user_id)
+        tableTable = Table(
+            id=get_random_uuid(),
+            table_name=all_details.table.table_name,
+            table_location=all_details.table.table_location,
+            created_by=user_id
+        )
+        schemaTable = Schema(
+            id=get_random_uuid(),
+            name=all_details.schema_.name,
+            table_id=tableTable.id,
+            share_id=shareTable.id,
+            created_by=user_id
+        )
+        
+        self.add(shareTable)
+        self.add(tableTable)
+        self.add(schemaTable)
 
     def get_schema_id_by_name(self, share_id, schemaname):
         stmt = select(Schema.id).where(

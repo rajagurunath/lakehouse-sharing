@@ -3,7 +3,7 @@ from core.login import Authenticator
 
 app_auth = Authenticator()
 from core.link import create_link_form_layout
-from core.schema import create_schema_form_layout
+from core.schema import create_complete_share_layout
 from core.share import create_share_form_layout
 from core.table import create_table_form_layout
 from core.table_format import table_format_exploration
@@ -33,12 +33,12 @@ def create_components_layout():
     table form
     """
     st.title("Lakehouse Share Components")
-    st.header("create a share")
-    create_share_form_layout()
-    st.header("create a table")
-    create_table_form_layout()
-    st.header("create a schema")
-    create_schema_form_layout()
+    # st.header("create a share")
+    # # create_share_form_layout()
+    # st.header("create a table")
+    # # create_table_form_layout()
+    # st.header("create a schema")
+    create_complete_share_layout()
 
 
 def user_link_layout():
@@ -50,6 +50,7 @@ def user_link_layout():
 
 
 def main_layout():
+    st.sidebar.title(f"Hi {st.session_state['username']}")
     tab = st.sidebar.radio(
         "Pages",
         ["Add User", "Create a Share", "Define Permissions", "Explore Table format"],
@@ -67,6 +68,7 @@ def main_layout():
 if __name__ == "__main__":
     app_auth.login_screen()
     if st.session_state["logged_in"]:
+
         main_layout()
         app_auth.logout()
     else:

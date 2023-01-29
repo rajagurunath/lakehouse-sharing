@@ -55,6 +55,7 @@ class RestClient(BaseClient):
         if self.token is None:
             token = self.jauth.get_token()
         else:
+            print("Using existing user's token")
             token = self.token
         headers = {"Authorization": f"Bearer {token}"}
         return headers
