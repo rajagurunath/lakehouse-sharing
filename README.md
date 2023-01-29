@@ -105,7 +105,7 @@ Once docker-compose was up and running successfully, we can expect following url
 ![architecture](images/lakehouse-sharing-arch.png)
 
 ### Blog post
-Refer the accompanied blog post for more details : 
+Refer the accompanied blog post for more details :
 https://guruengineering.substack.com/p/lakehouse-sharing
 
 
