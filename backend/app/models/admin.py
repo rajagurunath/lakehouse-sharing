@@ -6,8 +6,10 @@ from pydantic import BaseModel
 class ShareModel(BaseModel):
     name: str
 
+
 class SchemaNameModel(BaseModel):
     name: str
+
 
 class TableModel(BaseModel):
     table_name: str
@@ -19,10 +21,12 @@ class SchemaModel(BaseModel):
     table_id: str
     share_id: str
 
+
 class AllDetails(BaseModel):
-    share:ShareModel
-    schema_:SchemaNameModel
-    table:TableModel
+    share: ShareModel
+    schema_: SchemaNameModel
+    table: TableModel
+
 
 class PermissionModel(BaseModel):
     user_id: str

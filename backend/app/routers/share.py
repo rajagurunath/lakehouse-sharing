@@ -63,7 +63,7 @@ def list_schema(
     user_share=Depends(validate_share), params: SingleTokenParams = Depends()
 ):
     user, share = user_share
-    schemas = query.list_schemas(share,user_id=user.id)
+    schemas = query.list_schemas(share, user_id=user.id)
     return custom_paginate(
         schemas, params=params, additional_data={"other_params": [share]}
     )
@@ -81,7 +81,7 @@ def list_tables(
     params: SingleTokenParams = Depends(),
 ):
     user, share, schema = share_and_schema
-    schemas = query.list_tables(share, schema=schema,user_id=user.id)
+    schemas = query.list_tables(share, schema=schema, user_id=user.id)
     return custom_paginate(
         schemas, params=params, additional_data={"other_params": [share, schema]}
     )

@@ -1,12 +1,12 @@
 from app.conf import Config
 from app.db.queries import AdminQuery
 from app.models.admin import (
+    AllDetails,
     PermissionModel,
     SchemaModel,
     ShareModel,
     TableModel,
     TokenLifetime,
-    AllDetails
 )
 from app.securities.user_auth import *
 from app.utilities import get_random_uuid
@@ -17,42 +17,46 @@ admin = APIRouter(prefix="/admin", tags=["admin"])
 query = AdminQuery()
 
 
-@admin.post("/share",deprecated=True)
+@admin.post("/share", deprecated=True)
 def create_share(share: ShareModel, current_user=Depends(get_current_user)):
     """
-    This endpoint was deprecated, please use /complete api endpoint to create a share 
+    This endpoint was deprecated, please use /complete api endpoint to create a share
     """
     # shares = config.get("shares")
-    query.create_share(share,user_id=current_user.id)
+    query.create_share(share, user_id=current_user.id)
     return f"Share {share.name} was created successfully"
 
 
-@admin.post("/schema",deprecated=True)
+@admin.post("/schema", deprecated=True)
 def create_schema(schema: SchemaModel, current_user=Depends(get_current_user)):
     """
-    This endpoint was deprecated, please use /complete api endpoint to create a Schema 
+    This endpoint was deprecated, please use /complete api endpoint to create a Schema
     """
     # shares = config.get("shares")
-    query.create_schema(schema,user_id=current_user.id)
+    query.create_schema(schema, user_id=current_user.id)
     return f"Schema {schema.name} was created successfully"
 
 
-@admin.post("/table",deprecated=True)
+@admin.post("/table", deprecated=True)
 def create_table(table: TableModel, current_user=Depends(get_current_user)):
     """
-    This endpoint was deprecated, please use /complete api endpoint to create a Table 
+    This endpoint was deprecated, please use /complete api endpoint to create a Table
     """
     # shares = config.get("shares")
-    query.create_table(table,user_id=current_user.id)
+    query.create_table(table, user_id=current_user.id)
     return f"Table {table.table_name} was created successfully"
 
+
 @admin.post("/complete")
-def create_complete_share(all_details:AllDetails,current_user=Depends(get_current_user)):
+def create_complete_share(
+    all_details: AllDetails, current_user=Depends(get_current_user)
+):
     """
     Creates share, Table and Schema (combined version all three apis)
     """
-    query.create_complete_share(all_details=all_details,user_id=current_user.id)
+    query.create_complete_share(all_details=all_details, user_id=current_user.id)
     return f"share:{all_details.share.name}, table: {all_details.table.table_name},schema:{all_details.schema_.name} was created successfully"
+
 
 @admin.post("/link")
 def link_resources(resources: PermissionModel):

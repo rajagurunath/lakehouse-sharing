@@ -9,7 +9,9 @@ def create_schema_in_db(completeDetails):
     response = client.post("/admin/complete", data=None, json=completeDetails)
     print(response.content)
     if response.status_code == 200:
-        st.markdown(f"## Share {completeDetails['share']['name']} created in the lakehouse")
+        st.markdown(
+            f"## Share {completeDetails['share']['name']} created in the lakehouse"
+        )
         st.balloons()
 
 
@@ -53,11 +55,11 @@ def create_complete_share_layout():
     schemaname = create_complete_share.text_input("schemaname")
     submit = create_complete_share.button("create")
     completeDetails = {}
-    completeDetails['share'] = {"name":sharename}
-    completeDetails['schema_'] = {"name":schemaname}
-    completeDetails['table'] ={
-        "table_name":tablename,
-        "table_location":table_location
+    completeDetails["share"] = {"name": sharename}
+    completeDetails["schema_"] = {"name": schemaname}
+    completeDetails["table"] = {
+        "table_name": tablename,
+        "table_location": table_location,
     }
     if submit:
         create_schema_in_db(completeDetails)

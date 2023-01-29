@@ -10,10 +10,8 @@ class Share(SQLModel, table=True):
     # __table_args__ = {"extend_existing": True}
 
     id: str = Field(primary_key=True)
-    name: str = Field(unique=True) 
-    created_by:str = Field(
-        default=None, nullable=False, foreign_key="user.id"
-    )
+    name: str = Field(unique=True)
+    created_by: str = Field(default=None, nullable=False, foreign_key="user.id")
 
 
 class Table(SQLModel, table=True):
@@ -21,9 +19,7 @@ class Table(SQLModel, table=True):
     id: str = Field(primary_key=True)
     table_name: str = Field(unique=True)
     table_location: str
-    created_by:str = Field(
-        default=None, nullable=False, foreign_key="user.id"
-    )
+    created_by: str = Field(default=None, nullable=False, foreign_key="user.id")
 
 
 class Schema(SQLModel, table=True):
@@ -33,9 +29,7 @@ class Schema(SQLModel, table=True):
     name: str = Field(unique=True)
     table_id: str = Field(default=None, foreign_key="table.id")
     share_id: str = Field(default=None, foreign_key="share.id")
-    created_by:str = Field(
-        default=None, nullable=False, foreign_key="user.id"
-    )
+    created_by: str = Field(default=None, nullable=False, foreign_key="user.id")
 
 
 class User(SQLModel, table=True):
@@ -106,37 +100,37 @@ user5 = User(
 session.add(user5)
 session.commit()
 
-delta_share1 = Share(name="delta_share1", id=str(uuid.uuid4()),created_by=user5.id)
-iceberg_share = Share(name="iceberg_share", id=str(uuid.uuid4()),created_by=user5.id)
-delta_share2 = Share(name="delta_share2", id=str(uuid.uuid4()),created_by=user5.id)
-delta_share3 = Share(name="delta_share3", id=str(uuid.uuid4()),created_by=user5.id)
+delta_share1 = Share(name="delta_share1", id=str(uuid.uuid4()), created_by=user5.id)
+iceberg_share = Share(name="iceberg_share", id=str(uuid.uuid4()), created_by=user5.id)
+delta_share2 = Share(name="delta_share2", id=str(uuid.uuid4()), created_by=user5.id)
+delta_share3 = Share(name="delta_share3", id=str(uuid.uuid4()), created_by=user5.id)
 
 
 delta_table1 = Table(
     table_name="test_hm",
     id=str(uuid.uuid4()),
     table_location="s3://tf-benchmarking/delta_2/dwh/test_hm",
-    created_by=user5.id
+    created_by=user5.id,
 )
 delta_table2 = Table(
     table_name="test_student",
     id=str(uuid.uuid4()),
     table_location="s3://tf-benchmarking/delta_2/dwh/test_student",
-    created_by=user5.id
+    created_by=user5.id,
 )
 
 delta_table3 = Table(
     table_name="test_teacher",
     id=str(uuid.uuid4()),
     table_location="s3://tf-benchmarking/delta_2/dwh/test_teacher",
-    created_by=user5.id
+    created_by=user5.id,
 )
 
 iceberg_table4 = Table(
     table_name="iceberg_benchmark_nyc_taxi_trips_v2",
     id=str(uuid.uuid4()),
     table_location="s3://dummy-bucket/iceberg_benchmark_nyc_taxi_trips_v2",
-    created_by=user5.id
+    created_by=user5.id,
 )
 
 schema1tb1 = Schema(
@@ -144,7 +138,7 @@ schema1tb1 = Schema(
     share_id=delta_share1.id,
     id=str(uuid.uuid4()),
     table_id=delta_table1.id,
-    created_by=user5.id
+    created_by=user5.id,
 )
 
 schema1tb2 = Schema(
@@ -152,7 +146,7 @@ schema1tb2 = Schema(
     share_id=delta_share1.id,
     id=str(uuid.uuid4()),
     table_id=delta_table2.id,
-    created_by=user5.id
+    created_by=user5.id,
 )
 
 
@@ -161,7 +155,7 @@ schema2tb1 = Schema(
     share_id=delta_share2.id,
     id=str(uuid.uuid4()),
     table_id=delta_table1.id,
-    created_by=user5.id
+    created_by=user5.id,
 )
 
 schema2tb2 = Schema(
@@ -169,7 +163,7 @@ schema2tb2 = Schema(
     share_id=delta_share2.id,
     id=str(uuid.uuid4()),
     table_id=delta_table2.id,
-    created_by=user5.id
+    created_by=user5.id,
 )
 
 schema3tb3 = Schema(
@@ -177,7 +171,7 @@ schema3tb3 = Schema(
     share_id=delta_share3.id,
     id=str(uuid.uuid4()),
     table_id=delta_table3.id,
-    created_by=user5.id
+    created_by=user5.id,
 )
 
 schema4tb3 = Schema(
@@ -185,11 +179,8 @@ schema4tb3 = Schema(
     share_id=iceberg_share.id,
     id=str(uuid.uuid4()),
     table_id=iceberg_table4.id,
-    created_by=user5.id
+    created_by=user5.id,
 )
-
-
-
 
 
 permission1 = Permission(
