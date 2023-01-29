@@ -1,11 +1,11 @@
 ListShareResult = [
-    {"id": "1ff31536-3777-404e-bf55-8c4dd2551029", "name": "delta_share1"},
-    {"id": "183c7152-4ef8-40f0-9fa2-87eb4917ed03", "name": "delta_share2"},
-    {"id": "ab4eebbc-93e2-4217-b641-4189b354edc0", "name": "delta_share3"},
-    {"id": "9fb26f71-db34-4a9d-bb4f-0ec87ad2b1f1", "name": "iceberg_share"},
+    {"id": "01460171-de53-4eb6-8d99-a8ed491bac1d", "name": "iceberg_share"},
+    {"id": "2b3b8cc2-cc46-4af5-9f59-92e7176e855a", "name": "delta_share1"},
+    {"id": "78a3a3d6-afb0-49c9-a45d-c89777f3b885", "name": "delta_share2"},
+    {"id": "97c9eeb6-2c18-481c-8690-40f0c819a2f2", "name": "delta_share3"},
 ]
 
-ShareResult = {"id": "1ff31536-3777-404e-bf55-8c4dd2551029", "name": "delta_share1"}
+ShareResult = {"id": "01460171-de53-4eb6-8d99-a8ed491bac1d", "name": "iceberg_share"}
 
 ListSchemaResult = [
     {"name": "delta_schema", "share": "delta_share1"},
@@ -17,8 +17,8 @@ ListTableResult = [
         "name": "iceberg_benchmark_nyc_taxi_trips_v2",
         "schema": "tripsdb",
         "share": "iceberg_share",
-        "shareId": "9fb26f71-db34-4a9d-bb4f-0ec87ad2b1f1",
-        "id": "8202f214-af87-40aa-aed9-6f4e7a66fe47",
+        "shareId": "01460171-de53-4eb6-8d99-a8ed491bac1d",
+        "id": "b22e0a03-7236-4482-9c6c-aed926073384",
     }
 ]
 
@@ -27,14 +27,14 @@ ListAllTableResult = [
         "name": "test_hm",
         "schema": "schema2",
         "share": "delta_share2",
-        "shareId": "183c7152-4ef8-40f0-9fa2-87eb4917ed03",
-        "id": "1cea2311-49d6-4741-8bce-aa785974d9cb",
+        "shareId": "78a3a3d6-afb0-49c9-a45d-c89777f3b885",
+        "id": "c098e038-d032-4da5-b5f8-e7401073b04c",
     },
     {
         "name": "test_hm",
         "schema": "schema2",
         "share": "delta_share2",
-        "shareId": "183c7152-4ef8-40f0-9fa2-87eb4917ed03",
-        "id": "1cea2311-49d6-4741-8bce-aa785974d9cb",
+        "shareId": "78a3a3d6-afb0-49c9-a45d-c89777f3b885",
+        "id": "c098e038-d032-4da5-b5f8-e7401073b04c",
     },
 ]

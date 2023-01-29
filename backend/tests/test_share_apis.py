@@ -20,7 +20,7 @@ from .mock_results import *
 def skip_auth():
     user = UserInDB(
         name="test_users",
-        id="3bb1ba30d5ea466e931a1fad256215c2",
+        id="a1ca3334052e4a079145df1e13c4cd41",
         email="abc@oss.com",
         encrypted_password="encrypted###***",
     )
