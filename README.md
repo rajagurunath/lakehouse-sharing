@@ -104,6 +104,14 @@ Once docker-compose was up and running successfully, we can expect following url
 ### Lakehouse- sharing Architecture
 ![architecture](images/lakehouse-sharing-arch.png)
 
+### Blog post
+Refer the accompanied blog post for more details : 
+https://guruengineering.substack.com/p/lakehouse-sharing
+
+
+### Video setup instructions
+https://youtu.be/6H0qv-thogY
+
 ### Code structure
 
 - For more details about the backend and frondend refer respective directories
@@ -230,3 +238,7 @@ Once docker-compose was up and running successfully, we can expect following url
 - PAckage this code in docker and wrap it up in Helm chart
 - For iceberg currently we are using glue catalog,
     load metadata directly from cloud storage without catalog
+
+
+### Reference:
+- [delta-sharing-protocol-specification](https://github.com/delta-io/delta-sharing/blob/main/PROTOCOL.md)
